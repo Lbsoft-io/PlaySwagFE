@@ -1,6 +1,6 @@
 <template>
   <div>
-    Component browser logic again
+    Component browser
   </div>
 </template>
 

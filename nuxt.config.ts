@@ -1,4 +1,6 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   build: {
@@ -11,7 +13,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
-    //...
+    '@pinia/nuxt'
   ],
   vite: {
     vue: {
@@ -19,5 +21,8 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+    plugins: [
+      nodePolyfills(),
+      ],
   },
 })
