@@ -6,8 +6,8 @@ import type { HttpMethods, MediaTypeObject, ResponseObject, SchemaObject, TagObj
 import type { Endpoint } from '~/core/core/ApiFormats.js'
 import { ParserUtility } from '~/core/utilities/ParserUtils';
 
-let api = "https://petstore3.swagger.io/api/v3/openapi.json"
-let api2 = "https://ajebeta.azurewebsites.net/swagger/v1/swagger.json"
+let api2 = "https://petstore3.swagger.io/api/v3/openapi.json"
+let api1 = "https://ajebeta.azurewebsites.net/swagger/v1/swagger.json"
 
 export const useUseOpenApiParser = async (apiJson: string): Promise<Array<Endpoint>> => {
   let endpointModels = ref(Array<Endpoint>())

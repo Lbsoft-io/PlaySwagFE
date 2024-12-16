@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { Node } from '@vue-flow/core'
-import { VueFlow, Panel } from '@vue-flow/core'
-import { useUseOpenApiParser } from '~/composables/core/useOpenOpiParser';
+import type {Node} from '@vue-flow/core'
+import {VueFlow, Panel} from '@vue-flow/core'
+import {useUseOpenApiParser} from '~/composables/core/useOpenOpiParser';
 
 const nodes = ref<Node[]>([
   {
     id: '1',
-    position: { x: 50, y: 50 },
-    data: { label: 'Node 1', },
+    position: {x: 50, y: 50},
+    data: {label: 'Node 1',},
   }
 ]);
 
@@ -18,17 +18,10 @@ await endpoints.loadApis()
 console.log(endpoints.groupEndpointsByTag());
 
 
-
-
-
-
-
-
-
 </script>
 
 <template>
- 
+
   <VueFlow :nodes="nodes" dropzone="" @drop.prevent="">
 
   </VueFlow>
