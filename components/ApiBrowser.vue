@@ -10,20 +10,22 @@
             variant="solo"
             label="Search endpoints"
             single-line
+            class="elevation-0"
         />
+        {{dnd.isDragging}}
       </v-col>
     </v-row>
 
     <!-- Expansion Panels for Endpoints -->
     <v-row justify="center">
       <v-col cols="12">
-        <v-expansion-panels>
+        <v-expansion-panels elevation="0">
           <!-- Render panels by tag -->
           <v-expansion-panel v-for="(endpoints, tag, index) in filteredData" :key="index">
             <v-expansion-panel-title>
               <div style="width: 95%;" class="d-flex justify-space-between">
                 <span class="text-body-1 font-weight-bold">
-                  {{ tag.toUpperCase() }}
+                  {{ (tag as string).toUpperCase() }}
                 </span>
                 <span class="text-caption grey--text mt-0 ml-5">
                   {{ endpoints.length }} endpoints
@@ -35,15 +37,14 @@
               <v-row dense>
                 <v-col
                     v-for="endpoint in endpoints"
-                    :key="endpoint.Id"
+                    :key="endpoint.OperationId"
                     cols="12"
                 >
                   <v-sheet
                       :color="getMethodColor(endpoint.Method)+'-lighten-5'"
-                      class="rounded pa-3 d-flex align-center"
-                      draggable
-                      @dragstart="dragStart($event, endpoint.Id)"
-                      @click="alert('endpoint.Id')"
+                      class="rounded pa-3 d-flex align-center draggable-item"
+                      draggable="true"
+                      @dragstart="dragStart($event, endpoint.OperationId)"
                   >
                     <v-btn
                         :color="getMethodColor(endpoint.Method)"
@@ -63,7 +64,7 @@
                         {{ endpoint.Summary || "No summary available" }}
                       </div>
                       <div>
-                        {{endpoint}}
+<!--                        {{endpoint.Body || endpoint.Parameters }}-->
                       </div>
                     </div>
                   </v-sheet>
@@ -78,12 +79,12 @@
 </template>
 
 <script lang="ts" setup>
-import draggable from "vuedraggable";
+import type { Endpoint } from "~/core/core/ApiFormats";
+import {useDragAndDrop} from "~/stores/drag-and-drop";
 
 const searchTerm = ref("");
-const drag = ref(false);
-
 const endpoints = useEndpoints();
+const dnd = useDragAndDrop();
 
 // Load endpoints and group them by tag
 await endpoints.loadApis();
@@ -93,7 +94,8 @@ let data = endpoints.groupEndpointsByTag();
 const filteredData = computed(() => {
   if (!searchTerm.value) return data;
 
-  const filtered = {};
+  const filtered: Record<string, Endpoint[]> = {};
+  
   for (const [tag, endpoints] of Object.entries(data)) {
     const matches = endpoints.filter((endpoint) =>
         endpoint.Url.toLowerCase().includes(searchTerm.value.toLowerCase())
@@ -106,9 +108,8 @@ const filteredData = computed(() => {
 });
 
 // Drag event handler
-function dragStart(evt: DragEvent, Id: string) {
-  evt.dataTransfer?.setData("payload", Id);
-  console.log("Drag started for:", Id);
+function dragStart(evt: DragEvent, id: string) {
+  dnd.dragStart(evt, id)
 }
 
 // Function to get colors based on HTTP method type
@@ -147,5 +148,15 @@ function getMethodColor(method: string): string {
 
 .v-sheet:hover {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.draggable-item {
+
+  user-select: none; /* Prevent text selection */
+  cursor: grab;
+}
+
+.draggable-item:active {
+  cursor: grabbing;
 }
 </style>

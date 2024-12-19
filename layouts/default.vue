@@ -3,7 +3,7 @@
     <v-navigation-drawer width="600" v-model="drawer" :rail="rail" permanent @click="rail = false" app>
       <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg" title="Emmanuel Harry" nav>
         <template v-slot:append>
-          <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
+          <v-btn icon="mdi-chevron-left" flat @click.stop="rail = !rail"></v-btn>
         </template>
       </v-list-item>
 

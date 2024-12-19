@@ -3,9 +3,11 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   build: {
     transpile: ['vuetify'],
   },
+
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -15,6 +17,7 @@ export default defineNuxtConfig({
     },
     '@pinia/nuxt'
   ],
+
   vite: {
     vue: {
       template: {
