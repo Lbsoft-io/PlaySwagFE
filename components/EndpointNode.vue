@@ -1,5 +1,5 @@
 <template>
-  <v-card min-width="200" max-width="400" class="">
+  <v-card min-width="350" max-width="400" class="">
     <v-sheet
         :color="getMethodColor(endpointData?.Method)+'-lighten-5'"
         class="rounded pa-3 d-flex align-center"
@@ -22,17 +22,28 @@
           {{ endpointData?.Summary || "No summary available" }}
         </div>
         <div>
-          <!--                        {{endpoint.Body || endpoint.Parameters }}-->
+
         </div>
       </div>
     </v-sheet>
 
     <v-card-text class="red--text font-weight-light">
-      {{ endpointData?.Description }}
+      {{ endpointData?.Description || "No description" }}
     </v-card-text>
 
     <v-card-text class="red--text font-weight-light">
-      {{ endpointData }}
+      <EndpointNodeBodyParser :body="endpointData.Body" v-if="endpointData?.Body" />
+      <EnpointNodeParameterParser :params="endpointData.Parameters" v-if="endpointData?.Parameters.length != 0" />
+<!--      {{ endpointData }}-->
+    </v-card-text>
+
+    <v-card-text>
+      <v-sheet class="bg-grey-lighten-5 pa-3">
+        <div class="ml-1 text-caption">Response codes</div>
+        <v-chip rounded="sm" density="compact" class="ma-1" variant="tonal" v-for="status in endpointData?.ResponseStatusCodes" :key="status">
+          {{ status }}
+        </v-chip>
+      </v-sheet>
     </v-card-text>
 
     <v-card-actions>
@@ -40,12 +51,17 @@
       <v-btn density="compact" variant="tonal" color="red" icon="mdi-delete"></v-btn>
       <v-btn density="compact" variant="tonal" color="green" icon="mdi-play"></v-btn>
     </v-card-actions>
+
+    <Handle type="source" id="port-out-1" :position="Position.Bottom" />
+    <Handle type="target" id="port-in-1" :position="Position.Right" />
   </v-card>
 </template>
 <script setup lang="ts">
 import {Handle, Position, useVueFlow} from '@vue-flow/core'
 import {useEndpoints} from "~/stores/endpoints";
 import type {Endpoint} from '~/core/core/ApiFormats';
+import EndpointNodeBodyParser from "~/components/endpoint-node-objects/EndpointNodeBodyParser.vue";
+import EnpointNodeParameterParser from "~/components/endpoint-node-objects/EnpointNodeParameterParser.vue";
 
 const props = defineProps({
   id: {

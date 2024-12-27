@@ -6,8 +6,9 @@ import type {HttpMethods, MediaTypeObject, ResponseObject, SchemaObject, TagObje
 import type {Endpoint} from '~/core/core/ApiFormats.js'
 import {ParserUtility} from '~/core/utilities/ParserUtils';
 
-let api2 = "https://petstore3.swagger.io/api/v3/openapi.json"
-let api = "https://ajebeta.azurewebsites.net/swagger/v1/swagger.json"
+let api = "https://petstore3.swagger.io/api/v3/openapi.json"
+let api4 = "https://ajebeta.azurewebsites.net/swagger/v1/swagger.json"
+let api2 = "https://livingdocsio.github.io/openapi/livingdocs-openapi.json"
 
 export const useUseOpenApiParser = async (apiJson: string): Promise<Array<Endpoint>> => {
     let endpointModels = ref(Array<Endpoint>())
@@ -45,7 +46,6 @@ export const useUseOpenApiParser = async (apiJson: string): Promise<Array<Endpoi
                 RequestBodyMediaTypes: operation.getRequestBodyMediaTypes(),
                 ResponseStatusCodes: operation.getResponseStatusCodes(),
                 Summary: operation.getSummary()
-
             } as Endpoint
 
             endpointModels.value.push(endpointModel)

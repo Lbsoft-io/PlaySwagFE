@@ -19,5 +19,9 @@ export interface Parameter {
     Type: number | string | object | boolean
     Name: string,
     default: string,
-    In: string
+    In: string,
+    Description: string | undefined,
+    IsRequired: boolean,
+    Example: string | undefined,
+    Value: any | undefined
 }

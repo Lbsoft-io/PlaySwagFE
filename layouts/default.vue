@@ -37,7 +37,7 @@ import ComponentBrowser from '~/components/ComponentBrowser.vue';
 
 var tab = ref("one")
 var drawer = ref(true)
-var rail = ref(false)
+var rail = ref(true)
 </script>
 
 <style></style>
