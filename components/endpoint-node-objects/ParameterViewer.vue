@@ -5,6 +5,13 @@
     <v-card-text>
       <template v-for="param in params" :key="param.Name">
         <v-sheet class="">
+          <div class="d-flex justify-end text-caption text-light-red">
+            <v-chip color="grey" density="compact" rounded="1" variant="text">
+              {{param.Type.type}} {{param.IsRequired ? 'required' : 'optional'}}
+            </v-chip>
+
+          </div>
+<!--          {{param}}-->
           <v-select
               v-if="param.Type.enum"
               v-model="param.Value"
@@ -18,7 +25,24 @@
           </v-select>
 
           <v-text-field
-              v-else
+              v-if="param.Type.type === 'integer'"
+              v-model="param.Value"
+              :="PropsBinder(param)"
+              class="elevation-0"
+              density="compact"
+              flat
+              type="number"
+              :placeholder="param.Type.example"
+              variant="outlined">
+            <v-tooltip
+                activator="parent"
+                location="start"
+                max-width="200"
+            >{{param.Description}}</v-tooltip>
+          </v-text-field>
+
+          <v-text-field
+              v-if="param.Type.type === 'string'"
               v-model="param.Value"
               :="PropsBinder(param)"
               class="elevation-0"
@@ -66,7 +90,7 @@ interface ControlProps {
 
 function PropsBinder(data: any): ControlProps {
   let prop = {} as ControlProps
-  prop.label = 'In ' + data.In + ' {' + data.Name + '}'
+  prop.label = '' + data.In + ' [' + data.Name + ']'
   prop.items = data.Type.enum
   return prop
 }

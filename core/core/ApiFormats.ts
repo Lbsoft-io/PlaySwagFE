@@ -12,7 +12,9 @@ export interface Endpoint {
     Body: any,
     OperationId: string,
     RequestBodyMediaTypes: string[],
-    ResponseStatusCodes: string[]
+    ResponseStatusCodes: string[],
+    ResponseExample: any
+
 }
 
 export interface Parameter {

@@ -6,7 +6,14 @@
       @dragover="onDragOver"
       @connect="onConnect"
       fit-view
+      :zoomOnScroll="zoomEnabled"
+      :zoomOnPinch="zoomEnabled"
+      :zoomOnDoubleClick="true"
+      :defaultViewport="{ zoom: 1, x: 0, y: 0 }"
       :defaultEdgeOptions = "{type: 'custom'}"
+      snap-to-grid
+      @nodeMouseEnter="handleNodeMouseEnter"
+      @nodeMouseLeave="handleNodeMouseLeave"
   >
     <Background :size="2" :gap="20"/>
 
@@ -93,6 +100,16 @@ const onDragOver = (event: DragEvent) => {
 const handleDrop = (event: DragEvent) => {
   dropHandler(event, nodes.value);
 };
+
+const zoomEnabled = ref(true); // Controls zooming state
+
+function handleNodeMouseEnter() {
+  zoomEnabled.value = false; // Disable zooming when mouse is over a node
+}
+
+function handleNodeMouseLeave() {
+  zoomEnabled.value = true; // Re-enable zooming when mouse leaves a node
+}
 </script>
 
 <style>

@@ -45,7 +45,8 @@ export const useUseOpenApiParser = async (apiJson: string): Promise<Array<Endpoi
                 Body: operation.getRequestBody(),
                 RequestBodyMediaTypes: operation.getRequestBodyMediaTypes(),
                 ResponseStatusCodes: operation.getResponseStatusCodes(),
-                Summary: operation.getSummary()
+                Summary: operation.getSummary(),
+                ResponseExample: operation.getResponseByStatusCode(200)
             } as Endpoint
 
             endpointModels.value.push(endpointModel)
