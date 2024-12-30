@@ -3,6 +3,7 @@
     <div style="width: 100%;">
       <v-spacer></v-spacer>
       <v-btn variant="flat" density="compact" class="my-1" icon="mdi-arrow-all"></v-btn>
+      {{props.id}}
     </div>
 
     <v-card @mousedown.stop min-width="800" max-width="600" class="">
@@ -38,8 +39,8 @@
       </v-card-text>
 
       <v-card-text class="red--text font-weight-light">
-        <EnpointNodeParameterParser :params="endpointData.Parameters" v-if="endpointData?.Parameters.length != 0" />
-        <EndpointNodeBodyParser :body="endpointData.Body" v-if="endpointData?.Body" />
+        <ParameterViewer :params="endpointData.Parameters" v-if="endpointData?.Parameters.length != 0" />
+        <BodyEditor :body="endpointData.Body" v-if="endpointData?.Body" />
         <JsonEditor :mode="'text'" :body="endpointData.ResponseExample" v-if="endpointData?.ResponseExample" />
         <!--      {{ endpointData.ResponseExample }}-->
       </v-card-text>
@@ -55,7 +56,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn density="compact" variant="tonal" color="red" icon="mdi-delete"></v-btn>
+        <v-btn @click="removeNode" density="compact" variant="tonal" color="red" icon="mdi-delete"></v-btn>
         <v-btn density="compact" variant="tonal" color="green" icon="mdi-play"></v-btn>
       </v-card-actions>
 
@@ -69,8 +70,8 @@
 import {Handle, Position, useVueFlow} from '@vue-flow/core'
 import {useEndpoints} from "~/stores/endpoints";
 import type {Endpoint} from '~/core/core/ApiFormats';
-import EndpointNodeBodyParser from "~/components/endpoint-node-objects/BodyViewer.vue";
-import EnpointNodeParameterParser from "~/components/endpoint-node-objects/ParameterViewer.vue";
+import BodyEditor from "~/components/endpoint-node-objects/BodyViewer.vue";
+import ParameterViewer from "~/components/endpoint-node-objects/ParameterViewer.vue";
 import JsonEditor from "~/components/third-party-wrappers/JsonEditor.vue";
 
 const props = defineProps({
@@ -85,7 +86,7 @@ const props = defineProps({
 })
 
 const {getEndpointByOperationId} = useEndpoints()
-const {updateNodeData, getConnectedEdges} = useVueFlow()
+const {updateNodeData, getConnectedEdges, removeNodes} = useVueFlow()
 
 let endpointData = getEndpointByOperationId(props.data.label) as Endpoint
 
@@ -104,6 +105,11 @@ function getMethodColor(method: string): string {
     default:
       return "grey"; // Default color for other methods
   }
+}
+
+function removeNode() {
+  const connectedEdges = getConnectedEdges(props.id)
+  removeNodes(props.id)
 }
 
 </script>

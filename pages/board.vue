@@ -1,6 +1,5 @@
 <template>
   <VueFlow
-      :nodes="nodes"
       :edges="edges"
       @drop="handleDrop"
       @dragover="onDragOver"
@@ -17,41 +16,41 @@
   >
     <Background :size="2" :gap="20"/>
 
-    <!-- Custom Node Templates -->
-    <template #node-endpoint-node="props">
-      <EndpointNode :id="props.id" :data="props.data"/>
-    </template>
+      <!-- Custom Node Templates -->
+      <template #node-endpoint-node="props">
+        <EndpointNode :id="props.id" :data="props.data"/>
+      </template>
 
-    <template #node-rainbow-node="props">
-      <RainbowNode :id="props.id" :data="props.data"/>
-    </template>
+      <template #node-rainbow-node="props">
+        <RainbowNode :id="props.id" :data="props.data"/>
+      </template>
 
-    <!-- Custom Edge Template -->
-    <template #edge-custom="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, source, target, id, data }">
-      <GreenRiverFlowEdge
-          :source-x="sourceX"
-          :source-y="sourceY"
-          :target-x="targetX"
-          :target-y="targetY"
-          :source-position="sourcePosition"
-          :target-position="targetPosition"
-          :source="source"
-          :target="target"
-          :id="id"
-          :data="data"
-      />
-    </template>
+      <!-- Custom Edge Template -->
+      <template #edge-custom="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, source, target, id, data }">
+        <GreenRiverFlowEdge
+            :source-x="sourceX"
+            :source-y="sourceY"
+            :target-x="targetX"
+            :target-y="targetY"
+            :source-position="sourcePosition"
+            :target-position="targetPosition"
+            :source="source"
+            :target="target"
+            :id="id"
+            :data="data"
+        />
+      </template>
 
-    <!-- Connection Line Template -->
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
-      <GreenRiverFlowLine
-          :source-x="sourceX"
-          :source-y="sourceY"
-          :target-x="targetX"
-          :target-y="targetY"
-      />
-    </template>
-  </VueFlow>
+      <!-- Connection Line Template -->
+      <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
+        <GreenRiverFlowLine
+            :source-x="sourceX"
+            :source-y="sourceY"
+            :target-x="targetX"
+            :target-y="targetY"
+        />
+      </template>
+    </VueFlow>
 </template>
 
 <script setup lang="ts">
@@ -65,11 +64,9 @@ import GreenRiverFlowEdge from '~/components/edges/GreenRiverFlowEdge.vue';
 import GreenRiverFlowLine from '~/components/connection-lines/GreenRiverFlowLine.vue';
 import {useDragAndDrop} from '~/stores/drag-and-drop';
 
-const nodes = ref<Node[]>([
+let nodes = reactive<Node[]>([]);
 
-]);
-
-const edges = ref<Edge[]>([]);
+let edges = ref<Edge[]>([]);
 
 // Define custom edge types
 const edgeTypes = {
@@ -77,7 +74,9 @@ const edgeTypes = {
 };
 
 // VueFlow hooks
-const {onConnect, addEdges} = useVueFlow();
+const {onConnect, addEdges, getNodes} = useVueFlow({
+  id: 'vue-store',
+});
 
 // Handle new edge connections
 onConnect((connection) => {
@@ -98,7 +97,7 @@ const onDragOver = (event: DragEvent) => {
 };
 
 const handleDrop = (event: DragEvent) => {
-  dropHandler(event, nodes.value);
+  dropHandler(event, nodes);
 };
 
 const zoomEnabled = ref(true); // Controls zooming state

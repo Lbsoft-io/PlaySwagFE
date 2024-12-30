@@ -3,7 +3,9 @@ import {ref, watch} from 'vue'
 import {defineStore} from 'pinia'
 import type {Node} from '@vue-flow/core'
 
-const {screenToFlowCoordinate, project} = useVueFlow()
+const {screenToFlowCoordinate, project, addNodes} = useVueFlow({
+    id: 'vue-store'
+})
 
 export const useDragAndDrop = defineStore(
     {
@@ -25,7 +27,7 @@ export const useDragAndDrop = defineStore(
                     data: {label: data || "Dropped Node"},
                     type: 'endpoint-node'
                 } as Node;
-                nodes.push(newNode);
+                addNodes(newNode)
                 this.isDragging = false;
             },
             dragStart(dragEvent: DragEvent, Id: string) {
