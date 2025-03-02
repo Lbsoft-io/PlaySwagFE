@@ -24,6 +24,9 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
+    build: {
+      sourcemap: true, // Enable source maps
+    },
     plugins: [
       nodePolyfills(),
       ],

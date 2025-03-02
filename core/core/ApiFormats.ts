@@ -27,3 +27,9 @@ export interface Parameter {
     Example: string | undefined,
     Value: any | undefined
 }
+
+export interface RefComponent {
+
+}
+
+export type RefComponentMap = Record<string, RefComponent>

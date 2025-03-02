@@ -1,4 +1,4 @@
-import {Operation} from 'oas';
+import G from '~/core/GlobalConstants'
 
 export function getValueByPath(jsonObject: any, pathArray: (string | number)[]): any {
     let current = jsonObject;
@@ -45,8 +45,8 @@ export function extractExampleBody(schema) {
     return schema.default || null;
 }
 
-export function getRequestBodyFromBodySchema(body: any): object {
-    if (body[0] !== 'application/json') {
+export function getRequestBodyFromBodySchema(body: any): object | null {
+    if ( !G.RequestBodyJsonContentTypes.includes(body[0])) {
         return null
     }
     let schema = body[1].schema;

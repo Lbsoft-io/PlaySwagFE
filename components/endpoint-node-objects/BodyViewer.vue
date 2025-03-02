@@ -40,7 +40,7 @@ function nodeSelected(node: EditableNode) {
         ></v-select>
       </div>
     </v-sheet>
-
+{{props.body}}
     <!-- JSON Editor -->
     <v-divider></v-divider>
     <div class="">

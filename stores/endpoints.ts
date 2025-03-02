@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useUseOpenApiParser } from '~/composables/core/useOpenApiParser'
+import { getOpenApiPaths, getOpenApiComponents } from '~/composables/core/useOpenApiParser'
 import type { Endpoint } from '~/core/core/ApiFormats'
 
 export const useEndpoints = defineStore({
@@ -9,7 +9,8 @@ export const useEndpoints = defineStore({
   }),
   actions: {
     async loadApis() {
-      this.apis = await useUseOpenApiParser('')
+      this.apis = await getOpenApiPaths('')
+      await getOpenApiComponents("")
     },
     getEndpointByOperationId(operationId: string): Endpoint | undefined {
       return this.apis.find(endpoint => endpoint.OperationId === operationId)
